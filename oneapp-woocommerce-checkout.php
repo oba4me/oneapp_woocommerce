@@ -90,7 +90,7 @@ add_action('plugins_loaded', function() {
             $this->icon = plugins_url('images/1app.png', __FILE__);
             $this->has_fields = false;
             $this->method_title = 'Oneapp Payment';
-            $this->method_description = 'Pay securely using Oneapp inline checkout.';
+            $this->method_description = 'Pay Securely using Oneapp inline checkout.';
             $this->supports = array( 'products' );
 
             $this->init_form_fields();
