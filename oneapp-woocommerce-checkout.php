@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Oneapp Woocommerce Checkout
  * Description: Integrates 1app's inline popup checkout with WooCommerce.
- * Version: 1.0
+ * Version: 1.1
  * Author: Alexander Bamidele
  * Author URI: https://achievablenautomated.com
  * License: GPL2

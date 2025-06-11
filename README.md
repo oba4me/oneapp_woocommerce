@@ -71,4 +71,4 @@ Distributed under the **GPL‑2.0** license. See `LICENSE` for full details.
 ---
 
 *Created and maintained by OBA4ME*  
-*Plugin version: 1.0.0*
+*Plugin version: 1.0.1*
