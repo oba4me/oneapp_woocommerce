@@ -22,6 +22,7 @@
 2. Copy the plugin folder to your WooCommerce plugins directory:
 3. Activate the plugin via the **WordPress Admin → Plugins** screen.
 4. Navigate to **WooCommerce → Settings → Payments → 1App / Boldd** to configure API credentials and settings.
+5. Create an account at **https://useboldd.com** and get your API credentials.
 
 ## ⚙️ Configuration
 
