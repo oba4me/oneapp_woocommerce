@@ -66,7 +66,7 @@ Distributed under the **GPL‑2.0** license. See `LICENSE` for full details.
 
 - Found a bug or want a new feature? Open an **Issue**.
 - Pull requests are reviewed and merged if aligned with project direction.
-- For help with integration, contact **oba4me@outlook.com** (replace with real contact).
+- For help with integration, contact **oba4me@outlook.com**.
 
 ---
 
