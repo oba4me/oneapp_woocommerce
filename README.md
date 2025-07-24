@@ -1,4 +1,4 @@
-# OneApp WooCommerce Payment Gateway
+# OneApp/Boldd WooCommerce Payment Gateway
 
 **OneApp WooCommerce Plugin** – Seamlessly integrates the 1App (Boldd) payment gateway into your WooCommerce store.
 
