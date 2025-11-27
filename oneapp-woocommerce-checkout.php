@@ -941,3 +941,10 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), function( $lin
     $links[] = '<a href="' . esc_url( $dashboard ) . '" target="_blank" rel="noopener noreferrer">Boldd Dashboard</a>';
     return $links;
 });
+
+add_filter( 'woocommerce_update_order_review_fragments', function( $fragments ) {
+    ob_start();
+    wc_get_template( 'checkout/payment.php' );
+    $fragments['#payment'] = ob_get_clean();
+    return $fragments;
+});
