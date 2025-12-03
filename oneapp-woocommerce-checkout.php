@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Boldd WooCommerce Checkout
  * Description: Integrates Boldd inline/standard checkout with WooCommerce. Uses gateway's Reference as canonical transaction id.
- * Version: 2.1
+ * Version: 2.2
  * Author: Alexander Bamidele
  * License: GPL2
  */
@@ -20,7 +20,39 @@ function boldd_log_debug( $message ) {
     }
 }
 
-define( 'BOLDD_PLUGIN_VERSION', '2.1' );
+define( 'BOLDD_PLUGIN_VERSION', '2.2' );
+
+// Instead, load it on 'woocommerce_blocks_loaded' hook:
+add_action('woocommerce_blocks_loaded', function() {
+    require_once plugin_dir_path( __FILE__ ) . 'includes/blocks/class-wc-boldd-blocks.php';
+
+    if ( class_exists( '\Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry' ) ) {
+        add_action(
+            'woocommerce_blocks_payment_method_type_registration',
+            function( $registry ) {
+                $registry->register( new WC_Boldd_Blocks_Support() );
+            }
+        );
+    }
+});
+
+add_action( 'enqueue_block_assets', function() {
+
+    wp_register_script(
+        'boldd-blocks-script',
+        plugins_url( 'assets/js/boldd-blocks.js', __FILE__ ),
+        [
+            'wc-blocks-registry',
+            'wc-blocks-checkout',
+            'wp-element',
+            'wp-api-fetch'
+        ],
+        BOLDD_PLUGIN_VERSION,
+        true
+    );
+
+});
+
 
 /**
  * --- WEBHOOK Hander (supports old param as fallback) ---
@@ -947,4 +979,14 @@ add_filter( 'woocommerce_update_order_review_fragments', function( $fragments ) 
     wc_get_template( 'checkout/payment.php' );
     $fragments['#payment'] = ob_get_clean();
     return $fragments;
+});
+
+add_action( 'enqueue_block_assets', function() {
+    wp_register_script(
+        'boldd-blocks-script',
+        plugins_url( 'assets/js/boldd-blocks.js', __FILE__ ),
+        [ 'wc-blocks-registry', 'wp-element', 'wp-api-fetch' ],
+        '1.0.0',
+        true
+    );
 });
