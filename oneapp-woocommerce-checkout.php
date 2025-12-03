@@ -280,16 +280,16 @@ add_action( 'plugins_loaded', function() {
             $this->id = 'bolddcheckout';
             $this->icon = plugins_url( 'images/boldd-logo.png', __FILE__ );
             $this->has_fields = false;
-            $this->method_title = 'Boldd Payment';
-            $this->method_description = 'Pay securely using Boldd inline or standard checkout.';
+            $this->method_title = '1App/Boldd Pay Online';
+            $this->method_description = 'Pay securely using 1App/Boldd inline or standard checkout.';
             $this->supports = array( 'products' );
 
             $this->init_form_fields();
             $this->init_settings();
 
             $this->enabled = $this->get_option( 'enabled', 'no' );
-            $this->title = $this->get_option( 'title', 'Boldd Payment' );
-            $this->description = $this->get_option( 'description', 'Pay securely using Boldd.' );
+            $this->title = $this->get_option( 'title', '1App/Boldd Pay Online' );
+            $this->description = $this->get_option( 'description', 'Pay securely using 1App/Boldd Online Checkout.' );
             $this->public_key = $this->get_option( 'public_key', '' );
             $this->secret_key = $this->get_option( 'secret_key', '' );
             $this->checkout_mode = $this->get_option( 'checkout_mode', 'inline' );
@@ -315,14 +315,14 @@ add_action( 'plugins_loaded', function() {
                     'title'       => 'Title',
                     'type'        => 'text',
                     'description' => 'Controls the title the user sees during checkout.',
-                    'default'     => 'Boldd Payment',
+                    'default'     => 'Boldd Pay Online',
                     'desc_tip'    => true,
                 ),
                 'description' => array(
                     'title'       => 'Description',
                     'type'        => 'textarea',
                     'description' => 'Payment method description. <br><strong>Webhook/Callback URL:</strong> <code>' . $webhook_url . '</code>',
-                    'default'     => 'Pay securely using Boldd inline checkout.',
+                    'default'     => 'Pay securely using 1App/Boldd inline checkout.',
                 ),
                 'public_key' => array(
                     'title'       => 'Public Key',
@@ -656,8 +656,8 @@ add_action( 'woocommerce_receipt_bolddcheckout', function( $order_id ) {
     $mode = $boldd_gateway ? $boldd_gateway->checkout_mode : 'inline';
     ?>
     <div id="boldd-payment-wrap" style="padding:20px 0;">
-        <p><?php esc_html_e( 'You will be redirected to pay with Boldd shortly.' ); ?></p>
-        <p><strong><?php echo esc_html( $boldd_gateway ? $boldd_gateway->title : 'Boldd Payment' ); ?></strong></p>
+        <p><?php esc_html_e( 'You will be redirected to pay with Boldd Online shortly.' ); ?></p>
+        <p><strong><?php echo esc_html( $boldd_gateway ? $boldd_gateway->title : 'Boldd Online Payment' ); ?></strong></p>
     </div>
 
     <div id="boldd-verifying-overlay" style="
