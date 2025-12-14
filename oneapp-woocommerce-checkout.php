@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Boldd WooCommerce Checkout
  * Description: Integrates Boldd inline/standard checkout with WooCommerce. Uses gateway's Reference as canonical transaction id.
- * Version: 2.2
+ * Version: 2.3
  * Author: Alexander Bamidele
  * License: GPL2
  */
@@ -20,7 +20,7 @@ function boldd_log_debug( $message ) {
     }
 }
 
-define( 'BOLDD_PLUGIN_VERSION', '2.2' );
+define( 'BOLDD_PLUGIN_VERSION', '2.3' );
 
 // Instead, load it on 'woocommerce_blocks_loaded' hook:
 add_action('woocommerce_blocks_loaded', function() {
@@ -398,14 +398,21 @@ add_action( 'plugins_loaded', function() {
             if ( $this->enabled !== 'yes' ) {
                 return false;
             }
+
             if ( empty( $this->public_key ) || empty( $this->secret_key ) ) {
                 return false;
             }
-            if ( function_exists( 'get_woocommerce_currency' ) && get_woocommerce_currency() !== 'NGN' ) {
-                return false;
+
+            if ( function_exists( 'get_woocommerce_currency' ) ) {
+                $allowed_currencies = [ 'NGN', 'USD', 'GBP' ];
+                if ( ! in_array( get_woocommerce_currency(), $allowed_currencies, true ) ) {
+                    return false;
+                }
             }
+
             return true;
         }
+
 
         /**
          * AJAX verify endpoint
@@ -549,7 +556,8 @@ add_action( 'plugins_loaded', function() {
                 'amount'         => number_format((float) $order->get_total(), 2, '.', ''),
                 'customer_email' => $order->get_billing_email(),
                 'phone'          => $order->get_billing_phone(),
-                'currency'       => 'NGN',
+                //'currency'       => 'NGN',
+                'currency'       => $order->get_currency(),
                 'redirecturl'    => $redirect_url,
                 'fname'          => $order->get_billing_first_name(),
                 'lname'          => $order->get_billing_last_name(),
@@ -633,6 +641,14 @@ add_action( 'woocommerce_receipt_bolddcheckout', function( $order_id ) {
     if ( ! $order ) {
         return;
     }
+    $currency = strtoupper( $order->get_currency() ?: 'NGN' ); //Added for inline currency support
+    // If usd or gbp, force standard mode
+    $mode = $boldd_gateway ? $boldd_gateway->checkout_mode : 'inline';
+
+    if ( $currency !== 'NGN' ) {
+        $mode = 'standard';
+    }
+
     $gateways = WC()->payment_gateways->get_available_payment_gateways();
     $boldd_gateway = $gateways['bolddcheckout'] ?? null;
     $publickey = $boldd_gateway ? esc_js( $boldd_gateway->public_key ) : '';
@@ -683,6 +699,7 @@ add_action( 'woocommerce_receipt_bolddcheckout', function( $order_id ) {
         };
         var amount = '<?php echo $amount; ?>';
         var checkoutMode = '<?php echo esc_js( $mode ); ?>';
+        var currency = '<?php echo esc_js( $currency ); ?>'; //Added for inline currency support
 
         function serverVerify(reference, orderId) {
             return $.ajax({
@@ -711,7 +728,8 @@ add_action( 'woocommerce_receipt_bolddcheckout', function( $order_id ) {
                     customer_email: customer.email,
                     phone: customer.phone,
                     reference: reference,
-                    currency: 'NGN',
+                    //currency: 'NGN',
+                    currency: currency || 'NGN', //Added for inline currency support
                     onComplete: function(response) {
                         var ref = response.reference || response.Reference || reference;
                         serverVerify(ref, orderId).done(function(res) {
@@ -795,11 +813,17 @@ add_action( 'woocommerce_receipt_bolddcheckout', function( $order_id ) {
         }
 
         $(function() {
-            if (checkoutMode === 'inline') {
+            /**if (checkoutMode === 'inline') {
+                openInline();
+            } else {
+                openStandard();
+            }*/
+            if (checkoutMode === 'inline' && currency === 'NGN') {
                 openInline();
             } else {
                 openStandard();
             }
+
         });
     })(jQuery);
     </script>
