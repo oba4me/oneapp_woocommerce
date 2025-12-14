@@ -3,7 +3,7 @@
 
 Plugin: Boldd WooCommerce Checkout  
 Main file: `oneapp-woocommerce-checkout.php`  
-Version: 2.1  
+Version: 2.3  
 Author: Alexander Bamidele  
 License: GPL-2.0
 
@@ -26,7 +26,7 @@ Integrates the OneApp / Boldd payment gateway with WooCommerce. Supports inline 
 - PHP 7.4+  
 - WooCommerce 4.x+  
 - Merchant account & API keys at https://useboldd.com (OneApp)
-- Currency: NGN (plugin only available when store currency is NGN)
+- Currency: NGN, USD, GBP (plugin only available when store currency is NGN, USD, GBP)
 
 # Installation
 ------------
@@ -82,7 +82,7 @@ Settings available in the gateway admin:
 ---------------
 - Entry file: `oneapp-woocommerce-checkout.php`
 - Key hooks used: `woocommerce_payment_gateways`, `woocommerce_receipt_bolddcheckout`, `rest_api_init`, admin-ajax hooks, `init` for webhook handling, scheduled event `boldd_verify_pending_orders`.
-- Currency check: plugin limits availability to stores using NGN.
+- Currency check: plugin limits availability to stores using NGN, USD, GBP.
 - Contributions and PRs welcome — follow WordPress PHP coding standards.
 
 # Support
